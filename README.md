@@ -7,5 +7,5 @@ Fork of SCIgen - An Automatic CS Paper Generator [http://pdos.csail.mit.edu/scig
 ```
 perl make-latex.pl
 cd tmp\scitmp.##
-dvipdf scimakelatex.##.dvipdf
+dvipdf scimakelatex.##.dvi
 ```
