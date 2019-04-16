@@ -144,7 +144,7 @@ open( VIZ, ">$viz_file.1" ) or die( "Can't open $viz_file for writing" );
 print VIZ $graph_file;
 close( VIZ );
 
-system("tr -d '\\015' < $viz_file.1 > $viz_file");
+system("tr -d '\\015' < $viz_file.1 > $viz_file; rm $viz_file.1;");
 print($program);
 #exit();
 system( "dot.exe -Tps $viz_file > $eps_file.tmp; ps2epsi $eps_file.tmp $eps_file" ) and

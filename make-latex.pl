@@ -141,7 +141,7 @@ open( TEX, ">$tex_file.1" ) or die( "Couldn't open $tex_file for writing" );
 print TEX $tex;
 close( TEX );
 
-system("tr -d '\\015' < $tex_file.1 > $tex_file");
+system("tr -d '\\015' < $tex_file.1 > $tex_file; rm $tex_file.1;");
 
 # for every figure you find in the file, generate a figure
 open( TEX, "<$tex_file" ) or die( "Couldn't read $tex_file" );
@@ -236,7 +236,7 @@ foreach my $clabel (keys(%citelabels)) {
     
 }
 close( BIB );
-system("tr -d '\\015' < $bib_file.1 > $bib_file");
+system("tr -d '\\015' < $bib_file.1 > $bib_file; rm $bib_file.1;");
 
 if( !defined $options{"savedir"} ) {
 
