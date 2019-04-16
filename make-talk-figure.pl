@@ -22,8 +22,8 @@ use strict;
 use scigen;
 use Getopt::Long;
 
-my $tmp_dir = "/tmp";
-my $tmp_pre = "/$tmp_dir/scimaketalkfig.$$";
+my $tmp_dir = "tmp";
+my $tmp_pre = "$tmp_dir/scimaketalkfig.$$";
 my $svg_file = "$tmp_pre.svg";
 my $eps_file = "$tmp_pre.eps";
 my $ps_file = "$tmp_pre.ps";

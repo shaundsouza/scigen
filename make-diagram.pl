@@ -22,7 +22,7 @@ use strict;
 use scigen;
 use Getopt::Long;
 
-my $tmp_dir = "/tmp";
+my $tmp_dir = "tmp";
 my $tmp_pre = "$tmp_dir/scimakediagram.$$";
 my $viz_file = "$tmp_pre.viz";
 my $eps_file = "$tmp_pre.eps";

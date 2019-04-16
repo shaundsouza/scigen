@@ -24,7 +24,7 @@ use IO::File;
 use Getopt::Long;
 use IO::Socket;
 
-my $tmp_dir = "/tmp/scitmp.$$";
+my $tmp_dir = "tmp/scitmp.$$";
 my $tmp_pre = "$tmp_dir/scimakelatex.";
 my $tex_prefix = "scimakelatex.$$";
 my $tex_file = "$tmp_pre$$.tex";
@@ -113,7 +113,7 @@ if( defined $options{"talk"} ) {
     $start_rule = "SCITALK_LATEX";
 } else {
     $tex_fh = new IO::File ("<scirules.in");
-    $start_rule = "SCIPAPER_LATEX1";
+    $start_rule = "SCIPAPER_LATEX";
 }
 my @a = ($sysname);
 $tex_dat->{"SYSNAME"} = \@a;

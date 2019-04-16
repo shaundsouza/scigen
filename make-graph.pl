@@ -104,7 +104,7 @@ my $type;
 my $curves;
 my $error = 0;
 
-my $tmp_dir = "/tmp/scigengraph.";
+my $tmp_dir = "tmp/scigengraph.";
 my $gpfile = "$tmp_dir$$.gnuplot";
 my $epsfile = "$tmp_dir$$.eps";
 if( defined $filename ) {
