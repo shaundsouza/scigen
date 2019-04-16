@@ -16,6 +16,7 @@
 #    along with SCIgen; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+use lib '.';
 
 use strict;
 use scigen;
@@ -246,7 +247,7 @@ if( !defined $filename ) {
     system( "gv $epsfile" ) and clean() 
 	and die( "Couldn't gv $epsfile" ) and clean();
 }
-clean();
+# clean();
 
 sub clean {
     system( "rm $tmp_dir$$*" ) and die( "Couldn't rm anything" );

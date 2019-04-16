@@ -16,6 +16,7 @@
 #    along with SCIgen; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+use lib '.';
 
 use strict;
 use scigen;
@@ -180,4 +181,4 @@ if( !defined $filename ) {
     system( "cp $eps_file $filename" );
 }
 
-system( "rm -f $tmp_pre*" ) and die( "Couldn't rm" );
+# system( "rm -f $tmp_pre*" ) and die( "Couldn't rm" );

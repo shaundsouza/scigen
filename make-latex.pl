@@ -16,6 +16,7 @@
 #    along with SCIgen; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+use lib '.';
 
 use strict;
 use scigen;
@@ -112,7 +113,7 @@ if( defined $options{"talk"} ) {
     $start_rule = "SCITALK_LATEX";
 } else {
     $tex_fh = new IO::File ("<scirules.in");
-    $start_rule = "SCIPAPER_LATEX";
+    $start_rule = "SCIPAPER_LATEX1";
 }
 my @a = ($sysname);
 $tex_dat->{"SYSNAME"} = \@a;
@@ -136,9 +137,11 @@ if( defined $title ) {
     $tex_dat->{"SCI_TITLE"} = \@a;
 }
 my $tex = scigen::generate ($tex_dat, $start_rule, $tex_RE, 0, 1);
-open( TEX, ">$tex_file" ) or die( "Couldn't open $tex_file for writing" );
+open( TEX, ">$tex_file.1" ) or die( "Couldn't open $tex_file for writing" );
 print TEX $tex;
 close( TEX );
+
+system("tr -d '\\015' < $tex_file.1 > $tex_file");
 
 # for every figure you find in the file, generate a figure
 open( TEX, "<$tex_file" ) or die( "Couldn't read $tex_file" );
@@ -157,6 +160,8 @@ while( <TEX> ) {
 	    if( defined $options{"talk"} ) {
 		$color = "--color"
 	    }
+		#print( "make-graph.pl --file $figfile --seed $newseed $color" );
+		#exit();
 	    system( "./make-graph.pl --file $figfile --seed $newseed $color" ) 
 		or $done=1;
 	}
@@ -169,11 +174,17 @@ while( <TEX> ) {
 	while( !$done ) {
 	    my $newseed = int rand 0xffffffff;
 	    if( `which neato` ) {
+		print($sysname);
+		print( "./make-diagram.pl --sys \"$sysname\" " . 
+			 "--file $figfile --seed $newseed" );
+		#exit();
 		(system( "./make-diagram.pl --sys \"$sysname\" " . 
 			 "--file $figfile --seed $newseed" ) or 
 		 !(-f $figfile)) 
 		    or $done=1;
 	    } else {
+		#print( "make-graph.pl --file $figfile --seed $newseed" );
+		#exit();
 		system( "./make-graph.pl --file $figfile --seed $newseed" ) 
 		    or $done=1;
 	    }
@@ -212,7 +223,7 @@ foreach my $author (@authors) {
 	push @{$tex_dat->{"SCI_SOURCE"}}, $author;
     }
 }
-open( BIB, ">$bib_file" ) or die( "Couldn't open $bib_file for writing" );
+open( BIB, ">$bib_file.1" ) or die( "Couldn't open $bib_file for writing" );
 foreach my $clabel (keys(%citelabels)) {
     my $sysname_cite = &get_system_name();
     @a = ($sysname_cite);
@@ -225,6 +236,7 @@ foreach my $clabel (keys(%citelabels)) {
     
 }
 close( BIB );
+system("tr -d '\\015' < $bib_file.1 > $bib_file");
 
 if( !defined $options{"savedir"} ) {
 
@@ -232,7 +244,7 @@ if( !defined $options{"savedir"} ) {
     if( defined $options{"talk"} ) {
 	$land = "-t landscape";
     }
-
+	
     system( "cp $class_files $tmp_dir; cd $tmp_dir; latex $tex_prefix; bibtex $tex_prefix; latex $tex_prefix; latex $tex_prefix; rm $class_files; " . 
 	    "dvips $land -o $ps_file $dvi_file" )
 	and die( "Couldn't latex nothing." );
@@ -246,10 +258,10 @@ if( !defined $options{"savedir"} ) {
 	    system( "cp $ps_file $f" ) and die( "Couldn't cp to $f" );
 	}
     } elsif( defined $options{"talk"} ) {
-	system( "ps2pdf $ps_file $pdf_file; acroread $pdf_file" ) 
+	system( "ps2pdf $ps_file $pdf_file" ) 
 	    and die( "Couldn't ps2pdf/acroread $ps_file" );
     } else {
-	system( "gv $ps_file" ) and die( "Couldn't gv $ps_file" );
+	#system( "gv $ps_file" ) and die( "Couldn't gv $ps_file" );
     }
 
 }
@@ -292,7 +304,7 @@ if( defined $options{"tar"} or defined $options{"savedir"} ) {
 system( "rm $tmp_pre*" ) and die( "Couldn't rm" );
 unlink( @figures );
 unlink( "$bib_file" );
-system( "rm -f $tmp_dir/dia*.tmp; rmdir $tmp_dir" );
+# system( "rm -f $tmp_dir/dia*.tmp; rmdir $tmp_dir" );
 
 sub get_system_name {
 

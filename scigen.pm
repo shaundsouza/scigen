@@ -16,6 +16,7 @@ package scigen;
 #    along with SCIgen; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+use lib '.';
 
 use strict;
 use IO::File;
@@ -191,14 +192,14 @@ sub pretty_print {
 	    chomp $newline;
 	    chomp $newline;
 	    $newline .= "}";
-	} elsif( $line =~ /\\title{(.*)}/ ) {
+	} elsif( $line =~ /\\title\{(.*)}/ ) {
 	    $newline = "\\title{" . 
 	      Autoformat::autoformat( $1, { case => 'highlight', 
 					    squeeze => 0  } );
 	    chomp $newline;
 	    chomp $newline;
 	    $newline .= "}";
-	} elsif( $line =~ /(.*) = {(.*)}\,/ ) {
+	} elsif( $line =~ /(.*) = \{(.*)}\,/ ) {
 	    my $label = $1;
 	    my $curr = $2;
 	    # place brackets around any words containing capital letters

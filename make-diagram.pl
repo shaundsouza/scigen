@@ -16,13 +16,14 @@
 #    along with SCIgen; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+use lib '.';
 
 use strict;
 use scigen;
 use Getopt::Long;
 
 my $tmp_dir = "/tmp";
-my $tmp_pre = "/$tmp_dir/scimakediagram.$$";
+my $tmp_pre = "$tmp_dir/scimakediagram.$$";
 my $viz_file = "$tmp_pre.viz";
 my $eps_file = "$tmp_pre.eps";
 
@@ -139,11 +140,14 @@ $dat->{"EDGES"} = \@h;
 scigen::compute_re( $dat, \$RE );
 my $graph_file = scigen::generate ($dat, "GRAPHVIZ", $RE, 0, 0);
 
-open( VIZ, ">$viz_file" ) or die( "Can't open $viz_file for writing" );
+open( VIZ, ">$viz_file.1" ) or die( "Can't open $viz_file for writing" );
 print VIZ $graph_file;
 close( VIZ );
 
-system( "$program -Tps $viz_file > $eps_file.tmp; ps2epsi $eps_file.tmp $eps_file" ) and
+system("tr -d '\\015' < $viz_file.1 > $viz_file");
+print($program);
+#exit();
+system( "dot.exe -Tps $viz_file > $eps_file.tmp; ps2epsi $eps_file.tmp $eps_file" ) and
     die( "Can't run $program on $viz_file" );
 
 if( `uname` =~ /Linux/ ) {
@@ -160,4 +164,4 @@ if( !defined $filename ) {
 	die( "Can't run $program on $viz_file" );
 }
 
-system( "rm -f $tmp_pre*" ) and die( "Couldn't rm" );
+# system( "rm -f $tmp_pre*" ) and die( "Couldn't rm" );
